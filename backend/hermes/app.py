@@ -5,4 +5,4 @@ app = Esmerald()
 
 @app.get(path="test")
 def welcome() -> JSONResponse:
-    return JSONResponse({"message": "Welcome to Hermod"})
+    return JSONResponse({"message": "Test"})
