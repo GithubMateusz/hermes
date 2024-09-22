@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize # new changes trigger action
+    branches:
+      - main
+      - dev
+
+jobs:
+  tests:
+    runs-on: "ubuntu-20.04"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.4.1
+          virtualenvs-create: false
+      - name: Install dependencies
+        run: poetry install
+      - name: Poetry check
+        run: poetry check
+      - name: Ruff
+        run: |
+          ruff check ./backend
+          ruff format ./backend --check
+      - name: Mypy
+        run: mypy ./backend
+      - name: Bandit
+        run: bandit --skip B101 -r ./backend
+      - name: Pytest Postgres
+        env:
+        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backed/tests
+      - name: Pytest Coverage
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: /tmp/coverage.xml
+          junitxml-path: /tmp/pytest.xml

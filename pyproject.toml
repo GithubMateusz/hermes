@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "hermes"
+version = "0.1.0"
+description = ""
+authors = ["Mateusz Gierczak <matgie9778@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+esmerald = "^3.4.1"
+uvicorn = "^0.30.6"
+uvloop = "^0.20.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "==0.1.13"
+mypy = "^1.11.2"
+bandit = "^1.7.8"
+ipython = "^8.4.0"
+greenlet = "^3.0.3"
+watchfiles = "^0.21.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+pytest-asyncio = "^0.21.2"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.12.0"
+pytest-sugar = "^0.9.7"
+pytest-repeat = "^0.9.3"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+watchdog = ">=2.0,<4.0"
+mkdocs-material = "^9.5.9"
+mkdocs-autorefs = "^0.5.0"
+mkdocs-gen-files = "^0.5.0"
+mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
