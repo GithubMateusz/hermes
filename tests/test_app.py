@@ -1,4 +1,4 @@
-from backend.hermes.app import app
+from hermes.app import app
 
 
 def test_app():

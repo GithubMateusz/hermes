@@ -30,14 +30,14 @@ jobs:
         run: poetry check
       - name: Ruff
         run: |
-          ruff check ./backend
-          ruff format ./backend --check
+          ruff check ./hermes
+          ruff format ./hermes --check
       - name: Mypy
-        run: mypy ./backend
+        run: mypy ./hermes
       - name: Bandit
-        run: bandit --skip B101 -r ./backend
+        run: bandit --skip B101 -r ./hermes
       - name: Pytest
-        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backend/tests
+        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
