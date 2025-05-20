@@ -4,24 +4,25 @@ on:
   push:
     branches:
       - main
-      - dev
   pull_request:
     types:
       - opened
-      - reopened
-      - synchronize # new changes trigger action
-    branches:
-      - main
-      - dev
+      - synchronize
+
+permissions:
+  pull-requests: write
+  contents: read
 
 jobs:
   tests:
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
+      - name: Install setuptools
+        run: pip install --upgrade pip setuptools wheel
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1
         with:
@@ -33,15 +34,14 @@ jobs:
         run: poetry check
       - name: Ruff
         run: |
-          ruff check ./backend
-          ruff format ./backend --check
+          ruff check ./hermes
+          ruff format ./hermes --check
       - name: Mypy
-        run: mypy ./backend
+        run: mypy ./hermes
       - name: Bandit
-        run: bandit --skip B101 -r ./backend
-      - name: Pytest Postgres
-        env:
-        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backed/tests
+        run: bandit --skip B101 -r ./hermes
+      - name: Pytest
+        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
