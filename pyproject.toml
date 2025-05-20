@@ -37,7 +37,7 @@ mkdocstrings = { extras = ["python"], version = "^0.24.0" }
 
 
 [tool.pytest.ini_options]
-addopts = "--cov=./bragi"
+addopts = "--cov=./backend/hermes"
 testpaths = ["./tests"]
 asyncio_mode = "auto"
 
