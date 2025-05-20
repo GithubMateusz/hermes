@@ -36,8 +36,8 @@ jobs:
         run: mypy ./backend
       - name: Bandit
         run: bandit --skip B101 -r ./backend
-      - name: Pytest Postgres
-        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backed/tests
+      - name: Pytest
+        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backend/tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
