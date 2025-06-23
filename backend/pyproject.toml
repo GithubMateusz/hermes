@@ -50,7 +50,6 @@ asyncio_mode = "auto"
 python_version = "3.12"
 namespace_packages = true
 ignore_missing_imports = true
-no_site_packages = true
 
 [tool.pyright]
 venvPath = "."
