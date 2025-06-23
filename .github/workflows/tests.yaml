@@ -31,19 +31,25 @@ jobs:
           version: 1.4.1
           virtualenvs-create: false
       - name: Install dependencies
-        run: poetry install -C backend
+        working-directory: backend
+        run: poetry install
       - name: Poetry check
-        run: poetry check -C backend
+        working-directory: backend
+        run: poetry check
       - name: Ruff
+        working-directory: backend
         run: |
-          ruff check ./backend/hermes
-          ruff format ./backend/hermes --check
+          ruff check ./hermes
+          ruff format ./hermes --check
       - name: Mypy
-        run: mypy ./backend/hermes
+        working-directory: backend
+        run: mypy ./hermes
       - name: Bandit
-        run: bandit --skip B101 -r ./backend/hermes
+        working-directory: backend
+        run: bandit --skip B101 -r ./hermes
       - name: Pytest
-        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backend/tests
+        working-directory: backend
+        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:
