@@ -38,5 +38,6 @@ repos:
     rev: 1.4.0
     hooks:
       - id: poetry-check
+        args: ["-C", "backend"]
       - id: poetry-lock
-        args: ["--no-update"]
+        args: ["--no-update", "-C", "backend"]

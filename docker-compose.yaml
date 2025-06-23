@@ -4,17 +4,35 @@ x-env: &env
   TERM: "xterm-256color"
 
 services:
+  # ---- database ----
+  postgres:
+    image: pgvector/pgvector:pg17 # PostgreSQL with pgvector support
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hermes
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg:/var/lib/postgresql/data
   # ---- side ----
   backend:
     tty: true
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     command: uvicorn hermes.app:app --host=0.0.0.0 --port 8000 --reload --http h11 --loop uvloop
     restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - .env
     environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/hermes
       <<: *env
     volumes:
       - ./backend/hermes:/app/hermes
     ports:
       - "8000:8000"
+volumes:
+  pg:

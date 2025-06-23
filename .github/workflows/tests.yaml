@@ -8,6 +8,8 @@ on:
     types:
       - opened
       - synchronize
+    branches:
+      - main
 
 permissions:
   pull-requests: write
@@ -29,19 +31,19 @@ jobs:
           version: 1.4.1
           virtualenvs-create: false
       - name: Install dependencies
-        run: poetry install
+        run: poetry install -C backend
       - name: Poetry check
-        run: poetry check
+        run: poetry check -C backend
       - name: Ruff
         run: |
-          ruff check ./hermes
-          ruff format ./hermes --check
+          ruff check ./backend/hermes
+          ruff format ./backend/hermes --check
       - name: Mypy
-        run: mypy ./hermes
+        run: mypy ./backend/hermes
       - name: Bandit
-        run: bandit --skip B101 -r ./hermes
+        run: bandit --skip B101 -r ./backend/hermes
       - name: Pytest
-        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
+        run: pytest -v --cov=./backend/hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./backend/tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
         with:

@@ -10,6 +10,11 @@ python = "^3.12"
 esmerald = "^3.4.1"
 uvicorn = "^0.30.6"
 uvloop = "^0.20.0"
+websockets = "^15.0.1"
+pydantic-ai = "^0.2.18"
+edgy = {version = "^0.32.1", extras = ["postgres"]}
+numpy = "2.2.6"
+pgvector = "^0.4.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "==0.1.13"
