@@ -18,6 +18,9 @@ permissions:
 jobs:
   tests:
     runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,26 +34,18 @@ jobs:
           version: 1.4.1
           virtualenvs-create: false
       - name: Install dependencies
-        working-directory: backend
         run: poetry install
       - name: Poetry check
-        working-directory: backend
         run: poetry check
       - name: Ruff
-        working-directory: backend
         run: |
           ruff check ./hermes
           ruff format ./hermes --check
       - name: Mypy
-        working-directory: backend
         run: mypy ./hermes
       - name: Bandit
-        working-directory: backend
         run: bandit --skip B101 -r ./hermes
       - name: Pytest
-        working-directory: backend
-        env:
-          PYTHONPATH: .
         run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
       - name: Pytest Coverage
         uses: MishaKav/pytest-coverage-comment@main
