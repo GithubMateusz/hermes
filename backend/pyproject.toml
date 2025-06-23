@@ -15,10 +15,10 @@ pydantic-ai = "^0.2.18"
 edgy = {version = "^0.32.1", extras = ["postgres"]}
 numpy = "2.2.6"
 pgvector = "^0.4.1"
+mypy = "^1.16.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "==0.1.13"
-mypy = "^1.11.2"
 bandit = "^1.7.8"
 ipython = "^8.4.0"
 greenlet = "^3.0.3"
