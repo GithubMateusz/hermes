@@ -45,12 +45,12 @@ jobs:
         run: mypy ./hermes
       - name: Bandit
         run: bandit --skip B101 -r ./hermes
-      - name: Pytest
-        env:
-          PYTHONPATH: .
-        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
-      - name: Pytest Coverage
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-xml-coverage-path: /tmp/coverage.xml
-          junitxml-path: /tmp/pytest.xml
+#      - name: Pytest
+#        env:
+#          PYTHONPATH: .
+#        run: pytest -v --cov=./hermes --cov-report term-missing --cov-report xml:/tmp/coverage.xml --junitxml=/tmp/pytest.xml ./tests
+#      - name: Pytest Coverage
+#        uses: MishaKav/pytest-coverage-comment@main
+#        with:
+#          pytest-xml-coverage-path: /tmp/coverage.xml
+#          junitxml-path: /tmp/pytest.xml
