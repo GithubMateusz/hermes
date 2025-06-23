@@ -30,7 +30,7 @@ repos:
       args: ["--skip", "B101"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.2
+    rev: v1.16.1
     hooks:
       - id: mypy
 
@@ -38,5 +38,6 @@ repos:
     rev: 1.4.0
     hooks:
       - id: poetry-check
+        args: ["-C", "backend"]
       - id: poetry-lock
-        args: ["--no-update"]
+        args: ["--no-update", "-C", "backend"]
