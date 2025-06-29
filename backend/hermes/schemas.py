@@ -10,3 +10,11 @@ class CreateProduct(BaseModel):
     color: str
     tags: list[str] = []
     sizes: list[int] = []
+
+
+class UserMessage(BaseModel):
+    message: str
+
+
+class ChatResponse(BaseModel):
+    response: str
