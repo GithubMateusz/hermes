@@ -14,3 +14,4 @@ RUN poetry install --no-root --no-interaction --no-ansi $NO_DEV
 ENV PATH /app/.venv/bin:$PATH
 
 COPY ./backend/hermes ./hermses
+COPY ./backend/migrations ./migrations

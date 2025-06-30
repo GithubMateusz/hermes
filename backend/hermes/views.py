@@ -14,25 +14,29 @@ dependencies = {"agent": Inject(get_agent_client)}
 class ProductView(APIView):
     path = "/products"
 
-    @get(path="/")
-    async def list_data(
+    @get(path="/", summary="List all products")
+    async def list_products(
         self,
     ) -> list[Product]:
         return await Product.query.all()
 
-    @post(path="/")
-    async def create(self, data: CreateProduct) -> Product:
+    @post(path="/", summary="Create a new product")
+    async def create_product(self, data: CreateProduct) -> Product:
         return await Product.query.create(**data.model_dump())
 
-    @post(path="/bulk")
-    async def bulk_create(
+    @post(path="/bulk", summary="Bulk create products")
+    async def bulk_create_products(
         self, data: Annotated[list[CreateProduct], Body(embed=False)]
     ) -> list[Product]:
         products = [item.model_dump() for item in data]
         return await Product.query.bulk_create(products)
 
-    @post(path="/embeddings", dependencies=dependencies)
-    async def embeddings(self, agent: AsyncAgentClient = Injects()) -> None:
+    @post(
+        path="/embedding",
+        dependencies=dependencies,
+        summary="Generate embeddings for products",
+    )
+    async def embedding(self, agent: AsyncAgentClient = Injects()) -> None:
         products: list[Product] = await Product.query.filter(
             Product.columns.embedding.is_(None)
         )
@@ -48,15 +52,15 @@ class ProductView(APIView):
 class ChatBotView(APIView):
     path = "/chatbot"
 
-    @post(path="/one", dependencies=dependencies)
-    async def one_view(
+    @post(path="/one", dependencies=dependencies, summary="Chat one message")
+    async def one(
         self, data: UserMessage, agent: AsyncAgentClient = Injects()
     ) -> ChatResponse:
-        reply = await agent.ask(model=Product, message=data.message, history=None)
+        reply, _ = await agent.ask(model=Product, message=data.message, history=None)
         return ChatResponse(response=reply)
 
     @websocket(path="/socket", dependencies=dependencies)
-    async def chatbot_view(
+    async def chatbot(
         self, socket: WebSocket, agent: AsyncAgentClient = Injects()
     ) -> None:
         await socket.accept()
@@ -66,10 +70,11 @@ class ChatBotView(APIView):
             try:
                 logger.info("Waiting for message...")
                 message = await socket.receive_text()
-                reply = await agent.ask(model=Product, message=message, history=history)
+                reply, messages = await agent.ask(
+                    model=Product, message=message, history=history
+                )
                 await socket.send_text(reply)
-                history.append(message)
-                history.append(reply)
+                history.extend(messages)
             except Exception as e:
                 logger.exception("Error in chatbot websocket", exc_info=e)
                 await socket.close()

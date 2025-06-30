@@ -9,7 +9,6 @@ class Settings(EsmeraldAPISettings):
     description: str = "Hermes API"
     docs_url: str = "/docs"
     redoc_url: str = "/redoc"
-    debug: bool = True
 
     chat_model: str = "gpt-3.5-turbo"
     embedding_model: str = "text-embedding-3-small"
@@ -17,7 +16,7 @@ class Settings(EsmeraldAPISettings):
 
 class DatabaseSettings(EdgySettings):
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/hermes"
-    preloads: list[str] = ["backend.hermes.models"]
+    preloads: list[str] = ["hermes.models"]
 
 
 settings = Settings()

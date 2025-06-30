@@ -34,3 +34,4 @@ site/
 # mypy
 .mypy_cache
 secrets/
+node_modules/
