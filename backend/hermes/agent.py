@@ -5,6 +5,7 @@ from edgy import Model
 from openai import AsyncOpenAI
 from pydantic_ai import RunContext
 from pydantic_ai.agent import Agent
+from pydantic_ai.messages import ModelMessage
 from pydantic_core import to_json
 
 from .settings import settings
@@ -32,7 +33,10 @@ class Deps:
 class AsyncAgentClient:
     system_prompt_template = """
         You are an assistant to an online store.
-        Your job is to answer customer questions about the products available in the store. You can search the list of the most suitable products using search_product.
+        Your job is to answer customer questions about the products available in the store.
+        Do not answer the question not related to the store and products.
+        You can search the list of the most suitable products using search_product,
+        remember that their number is limited to 5 so these are not all the products in the store.
         Answer as a store assistant, only in Polish.
         Take care of a nice format of your answer, using markdown and blank lines.
     """
@@ -61,7 +65,7 @@ class AsyncAgentClient:
         if not embeddings:
             return "No products found."
         embedding_json = to_json(embeddings[0]).decode()
-        query = f""" #
+        query = f"""
             SELECT * FROM {context.deps.model.Meta.tablename}
             ORDER BY embedding <-> CAST(:embedding_json AS vector)
             LIMIT 5
@@ -73,11 +77,11 @@ class AsyncAgentClient:
         return "\n".join(product.metadata for product in products)
 
     async def ask(
-        self, model: type[Model], message: str, history: list[str] | None
-    ) -> str:
+        self, model: type[Model], message: str, history: list[ModelMessage] | None
+    ) -> tuple[str, list[ModelMessage]]:
         deps = Deps(embedding_client=self.embedding_client, model=model)
         response = await self.chat.run(message, deps=deps, message_history=history)
-        return response.output
+        return response.output, response.new_messages()
 
     async def generate_embeddings(self, metadata: list[str]) -> list[list[float]]:
         return await self.embedding_client.generate(messages=metadata)

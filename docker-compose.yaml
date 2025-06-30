@@ -28,11 +28,24 @@ services:
     env_file:
       - .env
     environment:
+      DEBUG: true
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/hermes
       <<: *env
     volumes:
       - ./backend/hermes:/app/hermes
+      - ./backend/migrations:/app/migrations
     ports:
       - "8000:8000"
+  frontend:
+    tty: true
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_BACKEND_API_URL: localhost:8000
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
 volumes:
   pg:

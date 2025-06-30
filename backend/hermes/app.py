@@ -12,8 +12,8 @@ def get_application():
 
     app = registry.asgi(
         Esmerald(
-            routes=[Include(namespace="backend.hermes.urls")],
-            settings_module="backend.hermes.settings.Settings",
+            routes=[Include(namespace="hermes.urls")],
+            settings_module="hermes.settings.Settings",
         )
     )
 
