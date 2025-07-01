@@ -1,29 +1,26 @@
 # Hermes
 
-A
+1. Create .env file with:
 
-1. Build docker compose
+```
+OPENAI_API_KEY=your_openai_api_key
+```
+2. Build docker compose
 
 ```bash
 docker compose build
 ```
 
-2. Run docker compose
+3. Run docker compose
 
 ```bash
 docker compose up -d
 ```
 
-3. Run migrations
+4. Run migrations
 
 ```bash
 docker compose exec backend edgy migrate
-```
-
-4. Create .env file with:
-
-```
-OPENAI_API_KEY=your_openai_api_key
 ```
 
 5. Add products into API
