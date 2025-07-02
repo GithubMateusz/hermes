@@ -36,6 +36,16 @@ class Product(edgy.Model):
         auto_now=True, default=now, server_default=sa.func.now()
     )
 
+    def __str__(self):
+        return "\n".join(
+            [
+                f"{key.capitalize()}: {value}"
+                for key, value in self.dict(
+                    exclude={"id", "tags", "embedding", "created_at", "updated_at"}
+                ).items()
+            ]
+        )
+
     @property
     def metadata(self) -> str:
         return "\n".join(

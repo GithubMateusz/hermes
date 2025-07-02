@@ -10,7 +10,7 @@ class Settings(EsmeraldAPISettings):
     docs_url: str = "/docs"
     redoc_url: str = "/redoc"
 
-    chat_model: str = "gpt-3.5-turbo"
+    chat_model: str = "gpt-4.1"
     embedding_model: str = "text-embedding-3-small"
 
 
