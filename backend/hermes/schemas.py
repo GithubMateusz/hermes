@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class CreateProduct(BaseModel):
@@ -18,3 +18,8 @@ class UserMessage(BaseModel):
 
 class ChatResponse(BaseModel):
     response: str
+
+
+class ResponseProduct(CreateProduct):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
