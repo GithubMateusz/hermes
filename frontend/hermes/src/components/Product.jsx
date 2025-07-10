@@ -2,7 +2,6 @@ export const Product = ({index, imageUrl, name, show_name, className, imageClass
 
     return (
         <div
-            key={index}
             className={`${className}`}
         >
             <img
