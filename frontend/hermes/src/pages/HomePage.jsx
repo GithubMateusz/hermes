@@ -21,7 +21,7 @@ export default function HomePage() {
         },
         {
             imageUrl: "products/4.png",
-            name: "Product 3",
+            name: "Product 4",
             key: "product4"
         }
     ]
