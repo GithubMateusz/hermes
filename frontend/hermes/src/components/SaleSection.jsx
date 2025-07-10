@@ -4,8 +4,8 @@ export const SaleSection = ({title, products}) => {
     return (
         <section className="relative flex justify-center mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4">
-                {products.map((product, index) => (
-                    <Product key={product.key} imageUrl={product.imageUrl} name={product.name} index={index} show_name={false}
+                {products.map((product) => (
+                    <Product key={product.key} imageUrl={product.imageUrl} name={product.name} show_name={false}
                              className={"w-70"}/>
                 ))}
             </div>

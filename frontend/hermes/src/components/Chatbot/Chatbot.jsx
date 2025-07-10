@@ -36,7 +36,7 @@ export const Chatbot = () => {
 const Header = ({startNewSession}) => {
     return (
         <div
-            className="bg-linear-to-r from-[#EED7CE] to-[#AC83B7] p-4 flex justify-between items-center shadow-xl  border-1 border-[#DDDDDD]">
+            className="bg-gradient-to-r from-[#EED7CE] to-[#AC83B7] p-4 flex justify-between items-center shadow-xl  border-1 border-[#DDDDDD]">
             <span className="text-2xl font-light">Chatbot</span>
             <button
                 onClick={startNewSession}

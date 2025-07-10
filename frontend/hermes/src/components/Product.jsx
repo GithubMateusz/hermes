@@ -1,4 +1,4 @@
-export const Product = ({index, imageUrl, name, show_name, className, imageClassName}) => {
+export const Product = ({imageUrl, name, show_name, className, imageClassName}) => {
 
     return (
         <div
