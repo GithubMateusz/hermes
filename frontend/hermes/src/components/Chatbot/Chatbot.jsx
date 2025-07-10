@@ -39,7 +39,7 @@ const Header = ({startNewSession}) => {
             className="bg-gradient-to-r from-[#EED7CE] to-[#AC83B7] p-4 flex justify-between items-center shadow-xl  border-1 border-[#DDDDDD]">
             <span className="text-2xl font-light">Chatbot</span>
             <button
-                onClick={startNewSession}
+                onClick={() => {startNewSession()}}
                 className="bg-[#EED7CE] hover:bg-[#AC83B7] text-sm px-3 py-1 rounded-md transition"
                 aria-label="Nowa sesja"
                 title="Rozpocznij nową sesję"
