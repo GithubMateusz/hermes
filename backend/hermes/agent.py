@@ -87,6 +87,7 @@ If the customer asks:
 If the query is unclear or too general, kindly ask for more details.
 """
 
+
     def __init__(self, chat_model: str, embedding_model: str):
         self.openai = AsyncOpenAI()
         self.agent = Agent(
