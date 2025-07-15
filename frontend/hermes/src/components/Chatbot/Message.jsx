@@ -1,17 +1,10 @@
 import React from "react";
+import {formatText} from "../../helpers/text.jsx";
 
 
-export const MessageContainer = ({messages, messagesEndRef, loadingResponse}) => {
-    const formatText = (text) => {
-        return text.split("\n").map((line, idx) => (
-            <React.Fragment key={idx}>
-                {line === "" ? <br/> : line}
-                <br/>
-            </React.Fragment>
-        ));
-    };
+export const MessageContainer = ({messages, messagesEndRef, loadingResponse }) => {
     return (
-        <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-96 scrollbar-thin scrollbar-thumb-indigo-400">
+        <div className="flex-row space-y-3">
             {messages.map((message) => (
                 <Message key={message.key} from={message.from} text={formatText(message.text)}/>
             ))}

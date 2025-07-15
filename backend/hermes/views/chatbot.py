@@ -1,6 +1,7 @@
 from esmerald import Injects, WebSocket, post, websocket
 from esmerald.openapi.datastructures import OpenAPIResponse
 from esmerald.routing.apis.views import APIView
+from lilya.websockets import WebSocketDisconnect
 
 from hermes.agent import AsyncAgentClient
 from hermes.dependencies import dependencies
@@ -40,16 +41,17 @@ class ChatBotView(APIView):
         """
         await socket.accept()
         history: list[str] = []
-        while True:
-            try:
+        try:
+            while True:
                 logger.info("Waiting for message...")
                 message = await socket.receive_text()
+
                 reply, messages = await agent.ask(
                     model=Product, message=message, history=history
                 )
                 await socket.send_text(reply)
                 history.extend(messages)
-            except Exception as e:
-                logger.exception("Error in chatbot websocket", exc_info=e)
-                await socket.close()
-                break
+        except WebSocketDisconnect:
+            ...
+        except Exception as e:
+            logger.exception("Unexpected error in websocket handler", exc_info=e)

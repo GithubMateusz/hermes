@@ -11,6 +11,8 @@ export const useChatbot = (WS_URL) => {
     const [input, setInput] = useState("");
     const ws = useRef(null);
     const [loadingResponse, setLoadingResponse] = useState(false);
+    const [showQuestions, setShowQuestions] = useState(true);
+    const [send, setSend] = useState(false);
 
     const connectWebSocket = () => {
         ws.current = new WebSocket(WS_URL);
@@ -40,10 +42,12 @@ export const useChatbot = (WS_URL) => {
         };
     };
 
-    const sendMessage = () => {
-        if (!input.trim()) return;
+    const sendInputMessage = () => {
+        if (!send || !input.trim()) return;
 
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+            setShowQuestions(false);
+            setSend(false);
             ws.current.send(input);
             setMessages((prev) => [
                 ...prev,
@@ -57,6 +61,10 @@ export const useChatbot = (WS_URL) => {
         }
     };
 
+    useEffect(() => {
+        sendInputMessage();
+    }, [send, input]);
+
     const startNewSession = () => {
         if (ws.current) {
             ws.current.close();
@@ -64,6 +72,8 @@ export const useChatbot = (WS_URL) => {
 
         setMessages([defaultMessage]);
         setLoadingResponse(false);
+        setShowQuestions(true);
+        setSend(false);
         setTimeout(() => {
             connectWebSocket();
         }, 500);
@@ -77,11 +87,16 @@ export const useChatbot = (WS_URL) => {
         };
     }, []);
 
+    const sendMessage = () => {
+        setSend(true);
+    };
+
     return {
         messages,
         input,
         setInput,
         loadingResponse,
+        showQuestions,
         sendMessage,
         startNewSession,
     };
