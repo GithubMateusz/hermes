@@ -135,7 +135,7 @@ If the query is unclear or too general, kindly ask for more details.
         response = await self.agent.run(message, deps=deps, message_history=history)
         end = time.perf_counter()
         logger.info(
-            f"Chat model {self.chat_model} responded in {end - start:.2f} seconds.",
+            f"INFO: Agent response time for chat model {self.chat_model}: {end - start:.2f} seconds.",
         )
         return response.output, response.new_messages()
 
