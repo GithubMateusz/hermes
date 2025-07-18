@@ -1,4 +1,5 @@
 import functools
+import time
 from dataclasses import dataclass
 
 from edgy import Model
@@ -8,6 +9,7 @@ from pydantic_ai.agent import Agent
 from pydantic_ai.messages import ModelMessage
 from pydantic_core import to_json
 
+from .logger import logger
 from .settings import settings
 
 
@@ -87,8 +89,8 @@ If the customer asks:
 If the query is unclear or too general, kindly ask for more details.
 """
 
-
     def __init__(self, chat_model: str, embedding_model: str):
+        self.chat_model = chat_model
         self.openai = AsyncOpenAI()
         self.agent = Agent(
             model=chat_model,
@@ -128,8 +130,13 @@ If the query is unclear or too general, kindly ask for more details.
     async def ask(
         self, model: type[Model], message: str, history: list[ModelMessage] | None
     ) -> tuple[str, list[ModelMessage]]:
+        start = time.perf_counter()
         deps = Deps(embedding_client=self.embedding_client, model=model)
         response = await self.agent.run(message, deps=deps, message_history=history)
+        end = time.perf_counter()
+        logger.info(
+            f"INFO: Agent response time for chat model {self.chat_model}: {end - start:.2f} seconds.",
+        )
         return response.output, response.new_messages()
 
     async def generate_embeddings(self, metadata: list[str]) -> list[list[float]]:
